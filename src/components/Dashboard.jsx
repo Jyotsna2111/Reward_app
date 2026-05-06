@@ -23,8 +23,10 @@ const Dashboard = () => {
   const { data, loading } = useTransactionContext();
 
   const [customerId, setCustomerId] = useState("C1");
-  const [month, setMonth] = useState(new Date().getMonth() + 1);
-  const [year, setYear] = useState(2025);
+
+  // ✅ FIXED: default from data
+  const [month, setMonth] = useState(null);
+  const [year, setYear] = useState(null);
 
   // Pagination
   const [page, setPage] = useState(1);
@@ -32,12 +34,27 @@ const Dashboard = () => {
 
   const { monthly, total, filtered } = useRewards(data, customerId);
 
+  // ✅ Set default month/year from latest transaction
   useEffect(() => {
-    logger.info("Filters updated", { customerId, month, year });
-    setPage(1); // reset page on filter change
+    if (data.length > 0) {
+      const latest = new Date(
+        Math.max(...data.map((d) => new Date(d.date)))
+      );
+
+      setMonth(latest.getMonth() + 1);
+      setYear(latest.getFullYear());
+    }
+  }, [data]);
+
+  // Logging + reset page
+  useEffect(() => {
+    if (month && year) {
+      logger.info("Filters updated", { customerId, month, year });
+      setPage(1);
+    }
   }, [customerId, month, year]);
 
-  if (loading) return <h2>Loading...</h2>;
+  if (loading || !month || !year) return <h2>Loading...</h2>;
 
   const customers = [...new Set(data.map((d) => d.customerId))];
 
@@ -46,7 +63,6 @@ const Dashboard = () => {
     return d.getMonth() + 1 === month && d.getFullYear() === year;
   });
 
-  // Pagination logic
   const paginated = filteredByDate.slice(
     (page - 1) * pageSize,
     page * pageSize
@@ -78,7 +94,7 @@ const Dashboard = () => {
 
       {/* Chart */}
       <Card>
-        <h3>Monthly Rewards Overview (Last 3 Months)</h3>
+        <h3>Monthly Rewards Overview</h3>
         <RewardChart data={monthly} />
       </Card>
 
@@ -109,7 +125,7 @@ const Dashboard = () => {
               </tbody>
             </Table>
 
-            {/* Pagination */}
+            {/* ✅ Pagination only when needed */}
             {filteredByDate.length > pageSize && (
               <div style={{ marginTop: "15px", textAlign: "center" }}>
                 <button
