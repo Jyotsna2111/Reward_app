@@ -1,16 +1,61 @@
-# React + Vite
+# Reward Points Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+##  Overview
 
-Currently, two official plugins are available:
+This project calculates customer reward points based on transaction history over a 3-month period.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+##  Reward Logic
 
-## React Compiler
+* 2 points for every $1 spent over $100
+* 1 point for every $1 spent between $50 and $100
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Example:
+$120 → (20×2) + (50×1) = 90 points
 
-## Expanding the ESLint configuration
+##  Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+* React (Vite)
+* Context API
+* Styled Components
+* Recharts
+* Pino Logger
+* Vitest (Unit Testing)
+
+##  Features
+
+* Dynamic customer selection
+* Monthly reward calculation
+* Total reward points
+* Month & Year filter
+* Transaction-level reward display
+* Chart visualization
+* Pagination-ready structure
+* Logging using pino
+* Error handling & loading state
+
+##  Folder Structure
+
+Explain briefly (copy from project)
+
+##  Run Project
+
+npm install
+npm run dev
+
+##  Run Tests
+
+npx vitest
+
+##  Screenshots
+
+![screenshot](reward_app.png)
+
+##  Notes
+
+* Mock API used via JSON
+* No hardcoded data in components
+* Clean architecture followed
+
+##  Author
+
+Jyotsna Kumari
